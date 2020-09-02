@@ -21,11 +21,6 @@ export default {
         default: 'red'
     }
   },
-  //   data() {
-  //     return {
-  //       isAction: false,
-  //     };
-  //   },
   computed: {
     isAction() {
       return this.$route.path.indexOf(this.path) !== -1;
@@ -42,7 +37,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .tab-bar-item {
   flex: 1;
   text-align: center;

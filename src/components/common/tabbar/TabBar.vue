@@ -8,7 +8,7 @@
 export default {};
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 #tab-bar {
   background-color: #f6f6f6;
   position: fixed;
@@ -17,5 +17,6 @@ export default {};
   right: 0;
   display: flex;
   box-shadow: 0 -3px 1px rgba(100, 100, 100, 0.1);
+  z-index: 9;
 }
 </style>
