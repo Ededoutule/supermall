@@ -1,24 +1,33 @@
 <template>
-  <div id="home" class="wrapper">
+  <div id="home" class="wr">
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content">
-      <home-swiper :banners="banners"></home-swiper>
+    <tab-control
+      ref="tabControl1"
+      class="tap-contro"
+      :titles="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+      v-show="isTabFixed"
+    ></tab-control>
+    <scroll
+      :datas="goods[currentType].list"
+      class="content"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+      :pull-up-load="true"
+      :pull-down="true"
+      @pullingUp="loadMore"
+      @pullingDown="pullingDown"
+    >
+      <home-swiper @swiperImageLoad="swiperImageLoad" :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
-      <tab-control class="tap-contro" :titles="['流行', '新款', '精选']" @tabClick="tabClick"></tab-control>
+      <tab-control ref="tabControl2" :titles="['流行', '新款', '精选']" @tabClick="tabClick"></tab-control>
       <goods-list :goods="goods[currentType].list"></goods-list>
     </scroll>
-    <!-- <div class="wrapper-s" ref="wrapper">
-      <div class="content">
-        <home-swiper :banners="banners"></home-swiper>
-        <recommend-view :recommends="recommends"></recommend-view>
-        <feature-view></feature-view>
-        <tab-control class="tap-contro" :titles="['流行', '新款', '精选']" @tabClick="tabClick"></tab-control>
-        <goods-list :goods="goods[currentType].list"></goods-list>
-      </div>
-    </div> -->
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -33,6 +42,9 @@ import TabControl from "components/content/tabControl/TabControl";
 import NavBar from "components/common/navbar/NavBar";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop";
+
+import { debounce } from "common/utlis";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 
@@ -48,68 +60,34 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop", //传入的goods 的
-      isRandom: 1, //减少goods-list的复用性，生成随机数
-      // scroll: null,
+      isShowBackTop: false, // 组件BackTop的显示
+      taboffsetTop: 0,
+      isTabFixed: false, //tab是否固定
     };
   },
   mounted() {
     this._getHomeMultidata();
-    this._getHomeGoods("pop"
-    // ,()=>{
-    //   this.scroll = new BScroll(this.$refs.wrapper, {
-    //         click: true,
-    //         probeType: 3,
-    //         // pullUpLoad: true
-    //       });
-    // }
-    );
-    this._getHomeGoods("new"
-    // ,()=>{
-    //   this.scroll = new BScroll(this.$refs.wrapper, {
-    //         click: true,
-    //         probeType: 3,
-    //         // pullUpLoad: true
-    //       });
-    // }
-    );
-    this._getHomeGoods("sell"
-    // ,()=>{
-    //   this.scroll = new BScroll(this.$refs.wrapper, {
-    //         click: true,
-    //         probeType: 3,
-    //         // pullUpLoad: true
-    //       });
-    // }
-    );
+    this._getHomeGoods("pop");
+    this._getHomeGoods("new");
+    this._getHomeGoods("sell");
 
-    // this.scroll.on("scroll", (position) => {
-    //   console.log(position);
-    // });
+    // 当图片加载完成时，更新better-scroll 的内容
+    //使用节流函数
+    const refresh = debounce(this.$refs.scroll.refresh, 200);
+    this.$bus.$on("itemImageLoad", () => {
+      refresh();
+    });
   },
-  // watch: {
-  //   banners() {
-  //     this._updateScroll();
-  //   },
-  //   recommends() {
-  //     this._updateScroll();
-  //   },
-  //   goods() {
-  //     this._updateScroll();
-  //   },
-  // },
   methods: {
-    _updateScroll() {
-      console.log(111);
-      this.$nextTick(() => {
-        if (!this.scroll) {
-          this.scroll = new BScroll(this.$refs.wrapper, {
-            click: true,
-            probeType: 2,
-            // pullUpLoad: true
-          });
-        }
-      });
+    contentScroll(position) {
+      this.isShowBackTop = -position.y > 1000;
+      // console.log(-position.y);
+      this.isTabFixed = -position.y > this.taboffsetTop;
     },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0, 500);
+    },
+    //获取数据
     _getHomeMultidata() {
       getHomeMultidata().then((res) => {
         if (res.success) {
@@ -118,18 +96,31 @@ export default {
         }
       });
     },
-    _getHomeGoods(type,cd) {
+    //获取数据
+    _getHomeGoods(type) {
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
-        cd&&cd()
+        this.$refs.scroll.finishPullUp();
+        this.$refs.scroll.finishPullDown();
       });
     },
+    //点击获取'流行', '新款', '精选' 的数据
     tabClick(index) {
       const arr = ["pop", "new", "sell"];
       this.currentType = arr[index];
-      this.isRandom = Math.random(1, 100);
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
+    },
+    loadMore() {
+      this._getHomeGoods(this.currentType);
+    },
+    pullingDown() {
+      console.log(222);
+    },
+    swiperImageLoad() {
+      this.taboffsetTop = this.$refs.tabControl2.$el.offsetTop;
     },
   },
   components: {
@@ -140,25 +131,42 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
+    BackTop,
   },
 };
 </script>
 
 <style lang="less" scoped>
 #home {
-  // padding-top: 44px;
   height: 100vh;
   position: relative;
   .home-nav {
     background-color: #ff8198;
     color: #fff;
-
-    position: fixed;
-    top: 0;
+    /*在使用浏览器原生滚动时, 为了让导航不跟随一起滚动*/
+    // position: fixed;
+    // top: 0;
+    // left: 0;
+    // right: 0;
+    // z-index: 9;
+  }
+  .wrapper {
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
     left: 0;
     right: 0;
+    overflow: hidden;
+  }
+  .tap-contro {
+    position: relative;
     z-index: 9;
   }
-  
+  // .active{
+  //   position: fixed;
+  //   top: 44px;
+  //   right: 0;
+  //   left: 0;
+  // }
 }
 </style>

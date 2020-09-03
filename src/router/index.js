@@ -10,6 +10,8 @@ const Category = () =>
     import ('../views/category/Category.vue')
 const Profile = () =>
     import ('../views/profile/Profile.vue')
+const Detail = () =>
+    import ('../views/detail/Detail.vue')
 const routes = [{
         path: '/',
         // name: 'Home',
@@ -34,6 +36,12 @@ const routes = [{
         path: '/profile',
         name: 'Profile',
         component: Profile
+    },
+    {
+        path: '/detail/:id',
+        name: 'Detail',
+        component: Detail,
+        props: true
     }
 ]
 const originalPush = VueRouter.prototype.push
@@ -41,7 +49,7 @@ VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 }
 const router = new VueRouter({
-    mode: 'hash',
+    mode: 'history',
     // baseURL: prompt,
     routes
 })

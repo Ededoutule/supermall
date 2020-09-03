@@ -45,7 +45,6 @@ export default {
   line-height: 40px;
   .tab-control-item {
     flex: 1;
-
     span {
       padding: 5px;
     }
