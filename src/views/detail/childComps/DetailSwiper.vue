@@ -2,7 +2,7 @@
   <swiper class="detail-swiper">
     <swiper-item v-for="(item,index) in topImages" :key="index">
       <a>
-        <img :src="item" alt @load="imageLoad" />
+        <img :src="item" alt  />
       </a>
     </swiper-item>
   </swiper>
@@ -21,14 +21,6 @@ export default {
     return {
       isEmit: false,
     };
-  },
-  methods: {
-    imageLoad() {
-      if (!this.isEmit) {
-        this.$emit("swiperImageLoad");
-        this.isEmit = true;
-      }
-    },
   },
   components: {
     Swiper,

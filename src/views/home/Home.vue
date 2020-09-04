@@ -110,6 +110,7 @@ export default {
     tabClick(index) {
       const arr = ["pop", "new", "sell"];
       this.currentType = arr[index];
+      this.$refs.scroll.scrollTo(0, -this.taboffsetTop-2, 500);
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
@@ -121,6 +122,7 @@ export default {
     },
     swiperImageLoad() {
       this.taboffsetTop = this.$refs.tabControl2.$el.offsetTop;
+      this.$refs.scroll.refresh();
     },
   },
   components: {

@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="good.show.img" alt  @load="imageLoad" />
+    <img :src="showImage" alt  @load="imageLoad" />
     <div class="goods-info">
       <p>{{good.title}}</p>
       <span class="price">{{good.price}}</span>
@@ -14,6 +14,12 @@ export default {
   name: "GoodsListItem",
   props: {
     good: Object,
+  },
+  mixins: [],
+  computed: {
+    showImage() {
+      return this.good.image|| this.good.show.img
+    }
   },
   methods: {
     imageLoad() {

@@ -20,28 +20,43 @@ const routes = [{
     {
         path: '/home',
         name: 'Home',
-        component: Home
+        component: Home,
+        meta: {
+            isTabbar: true
+        }
     },
     {
         path: '/cart',
         name: 'Cart',
-        component: Cart
+        component: Cart,
+        meta: {
+            isTabbar: true
+        }
     },
     {
         path: '/category',
         name: 'Category',
-        component: Category
+        component: Category,
+        meta: {
+            isTabbar: true
+        }
     },
     {
         path: '/profile',
         name: 'Profile',
-        component: Profile
+        component: Profile,
+        meta: {
+            isTabbar: true
+        }
     },
     {
         path: '/detail/:id',
         name: 'Detail',
         component: Detail,
-        props: true
+        props: true,
+        meta: {
+            isTabbar: false
+        }
     }
 ]
 const originalPush = VueRouter.prototype.push
