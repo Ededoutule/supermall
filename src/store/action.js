@@ -10,6 +10,7 @@ export default {
         if (oldshop) {
             commit(ADD_COUNT, { oldshop, shop })
         } else {
+            shop.checked = false
             commit(ADD_SHOPING, { shop })
         }
     },

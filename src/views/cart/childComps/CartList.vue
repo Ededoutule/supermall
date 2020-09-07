@@ -1,8 +1,8 @@
 <!--  -->
 <template>
   <div>
-    <div v-for="(item,index) in shoping" :key="index">
-      <cart-list-item :cart-item='item'></cart-list-item>
+    <div v-for="(cartItem,index) in shoping" :key="index">
+      <cart-list-item :cart-item='cartItem'></cart-list-item>
     </div>
   </div>
 </template>

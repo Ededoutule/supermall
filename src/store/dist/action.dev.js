@@ -21,6 +21,7 @@ var _default = {
         shop: shop
       });
     } else {
+      shop.checked = false;
       commit(_mutationType.ADD_SHOPING, {
         shop: shop
       });
