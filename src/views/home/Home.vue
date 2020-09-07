@@ -45,6 +45,7 @@ import Scroll from "components/common/scroll/Scroll";
 import BackTop from "components/content/backTop/BackTop";
 
 import { debounce } from "common/utlis";
+import { Mixins, backTopMixins } from "common/mixin";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 
@@ -60,33 +61,30 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop", //传入的goods 的
-      isShowBackTop: false, // 组件BackTop的显示
       taboffsetTop: 0,
       isTabFixed: false, //tab是否固定
     };
   },
+  mixins: [Mixins, backTopMixins], //使用混入 , 可以混入与其他组件一样的东西
   mounted() {
     this._getHomeMultidata();
     this._getHomeGoods("pop");
     this._getHomeGoods("new");
     this._getHomeGoods("sell");
-
     // 当图片加载完成时，更新better-scroll 的内容
     //使用节流函数
     const refresh = debounce(this.$refs.scroll.refresh, 200);
-    this.$bus.$on("itemImageLoad", () => {
+    this.$bus.$on("homeitemImageLoad", () => {
       refresh();
     });
   },
   methods: {
     contentScroll(position) {
-      this.isShowBackTop = -position.y > 1000;
+      this.listenShowBackTop(position)
       // console.log(-position.y);
       this.isTabFixed = -position.y > this.taboffsetTop;
     },
-    backClick() {
-      this.$refs.scroll.scrollTo(0, 0, 500);
-    },
+
     //获取数据
     _getHomeMultidata() {
       getHomeMultidata().then((res) => {
@@ -102,15 +100,15 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
-        this.$refs.scroll.finishPullUp();
-        this.$refs.scroll.finishPullDown();
+        this.$refs.scroll.finishPullUp(); //获取新的数据
+        this.$refs.scroll.finishPullDown(); //获取新的数据
       });
     },
     //点击获取'流行', '新款', '精选' 的数据
     tabClick(index) {
       const arr = ["pop", "new", "sell"];
       this.currentType = arr[index];
-      this.$refs.scroll.scrollTo(0, -this.taboffsetTop-2, 500);
+      // this.$refs.scroll.scrollTo(0, -this.taboffsetTop-2, 500);  //点击时，到'流行', '新款', '精选'
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
@@ -122,7 +120,7 @@ export default {
     },
     swiperImageLoad() {
       this.taboffsetTop = this.$refs.tabControl2.$el.offsetTop;
-      this.$refs.scroll.refresh();
+      this.$refs.scroll.refresh(); //更新Bscroll 对象
     },
   },
   components: {
@@ -133,7 +131,6 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
   },
 };
 </script>

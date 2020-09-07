@@ -1,23 +1,26 @@
 <template>
-  <div v-if="commentInfo.list" class="comment-info">
-    <div class="comment">
-      <span>用户评论</span>
-      <div class="left">更多</div>
+  <div>
+    <div v-if="commentInfo.list" class="comment-info">
+      <div class="comment">
+        <span>用户评论</span>
+        <div class="left">更多</div>
+      </div>
+      <div class="comment-unit">
+        <div class="unit-logo">
+          <img :src="commentInfo.list[0].user.avatar" alt />
+          <span>{{commentInfo.list[0].user.uname}}</span>
+        </div>
+        <div class="comment-title">{{commentInfo.list[0].content}}</div>
+        <div class="comment-center">
+          <span class="center-left">{{commentInfo.list[0].created*1000 | data-formt}}</span>
+          <span>{{commentInfo.list[0].style}}</span>
+        </div>
+        <div class="comment-show">
+          <img v-for="(item,index) in commentInfo.list[0].images" :key="index" :src="item" alt />
+        </div>
+      </div>
     </div>
-    <div class="comment-unit">
-      <div class="unit-logo">
-        <img :src="commentInfo.list[0].user.avatar" alt />
-        <span>{{commentInfo.list[0].user.uname}}</span>
-      </div>
-      <div class="comment-title">{{commentInfo.list[0].content}}</div>
-      <div class="comment-center">
-        <span class="center-left">{{commentInfo.list[0].created*1000 | data-formt}}</span>
-        <span>{{commentInfo.list[0].style}}</span>
-      </div>
-      <div class="comment-show">
-        <img v-for="(item,index) in commentInfo.list[0].images" :key="index" :src="item" alt />
-      </div>
-    </div>
+    <div v-else class="no-comment">无评论</div>
   </div>
 </template>
 
@@ -84,5 +87,13 @@ export default {
       margin-right: 5px;
     }
   }
+}
+.no-comment {
+  height: 50px;
+  text-align: center;
+  color: green;
+  line-height: 50px;
+  padding: 20px 10px;
+  border-bottom: 2px solid #ccc;
 }
 </style>

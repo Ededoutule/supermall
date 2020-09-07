@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" ref="wrapper">
-    <div class="content">
+    <div >
       <slot></slot>
     </div>
   </div>
@@ -42,18 +42,14 @@ export default {
     this.$nextTick(() => {
       this._initScroll();
     });
-    setTimeout(() => {
-      this._initScroll();
-    }, 1000); //设置1秒的延迟生成BScroll对象
+    // setTimeout(() => {
+    //   this._initScroll();
+    // }, 1000); //设置1秒的延迟生成BScroll对象
   },
   watch: {
     datas() {
       this.$nextTick(() => {
-        if (!this.scroll) {
-          this._initScroll();
-        } else {
-          this.scroll && this.scroll.refresh();
-        }
+          this.scroll && this.scroll.refresh();     
       });
     },
   },
@@ -63,18 +59,18 @@ export default {
       if (!this.$refs.wrapper) {
         return;
       }
-      if (!this.scroll) {
-        this.scroll = new BScroll(this.$refs.wrapper, {
-          probeType: this.probeType,
-          mouseWheel: true,
-          click: true,
-          pullUpLoad: this.pullUpLoad,
-          pullDownRefresh: {
-            threshold: 30, // 当下拉到超过顶部 50px 时，触发 pullingDown 事件
-            stop: 0, // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
-          },
-        });
-      }
+
+      this.scroll = new BScroll(this.$refs.wrapper, {
+        probeType: this.probeType,
+        mouseWheel: false,
+        //  bounce: false,
+        click: true,
+        pullUpLoad: this.pullUpLoad,
+        pullDownRefresh: {
+          threshold: 30, // 当下拉到超过顶部 50px 时，触发 pullingDown 事件
+          stop: 0, // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
+        },
+      });
 
       this.scroll.on("scroll", (position) => {
         this.$emit("scroll", position);

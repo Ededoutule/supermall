@@ -5,6 +5,10 @@ import store from './store'
 import './filter/Data'
 Vue.config.productionTip = false
 
+import Vant from 'vant';
+import 'vant/lib/index.css';
+
+Vue.use(Vant);
 Vue.prototype.$bus = new Vue()
 
 new Vue({

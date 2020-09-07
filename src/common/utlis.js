@@ -1,4 +1,4 @@
-function debounce(func, delay) {
+function debounce(func, delay = 50) {
     let timer = null;
     return (...args) => {
         if (timer) clearTimeout(timer)
@@ -9,7 +9,7 @@ function debounce(func, delay) {
 }
 
 
-function throttle(func, delay) {
+function throttle(func, delay = 50) {
     let timer = null;
     return (...args) => {
         if (!timer) {

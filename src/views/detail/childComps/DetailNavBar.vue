@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <nav-bar>
-      <div slot="left" class="back" @click="backClick">
-        <img src="~assets/img/common/back.svg" alt />
-      </div>
-      <div slot="center" class="title">
-        <div
-          v-for="(item, index) in titles"
-          :key="index"
-          class="title-item"
-          :class="{active: index === currentIndex}"
-          @click="titleClick(index)"
-        >{{item}}</div>
-      </div>
-    </nav-bar>
-  </div>
+  <nav-bar>
+    <div slot="left" class="back" @click="backClick">
+      <img src="~assets/img/common/back.svg" alt />
+    </div>
+    <div slot="center" class="title">
+      <div
+        v-for="(item, index) in titles"
+        :key="index"
+        class="title-item"
+        :class="{active: index === currentIndex}"
+        @click="titleClick(index)"
+      >{{item}}</div>
+    </div>
+  </nav-bar>
 </template>
 
 <script>
@@ -34,6 +32,9 @@ export default {
   methods: {
     titleClick(index) {
       this.currentIndex = index;
+      console.log(this.currentIndex);
+      this.$emit("titleClick", index);
+      console.log(index);
     },
     backClick() {
       this.$router.back();

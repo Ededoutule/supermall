@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="showImage" alt  @load="imageLoad" />
+    <img :src="showImage" alt @load="imageLoad" />
     <div class="goods-info">
       <p>{{good.title}}</p>
       <span class="price">{{good.price}}</span>
@@ -18,17 +18,23 @@ export default {
   mixins: [],
   computed: {
     showImage() {
-      return this.good.image|| this.good.show.img
-    }
+      return this.good.image || this.good.show.img;
+    },
   },
   methods: {
     imageLoad() {
-      this.$bus.$emit('itemImageLoad')
+
+      //通过获取$route来判断什么组件在使用他，只在使用本组件的父组件，进行内容传输
+      if (this.$route.path.indexOf("/home") !== -1) {
+        this.$bus.$emit("homeitemImageLoad");  
+      } else if (this.$route.path.indexOf("/detail") !== -1) {
+        this.$bus.$emit("detailitemImageLoad");
+      }
     },
     itemClick() {
-      this.$router.push('/detail/'+ this.good.iid)
-    }
-  }
+      this.$router.push("/detail/" + this.good.iid);
+    },
+  },
 };
 </script>
 

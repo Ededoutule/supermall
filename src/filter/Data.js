@@ -13,3 +13,7 @@ Vue.filter('changeData', (value) => {
     var dat = new Date(value)
     return dat.getFullYear() + "-" + (dat.getMonth() - 1) + "-" + dat.getDay()
 })
+
+Vue.filter('fiex', (value) => {
+    return (value / 100).toFixed(2)
+})
