@@ -10,6 +10,12 @@ var _store = _interopRequireDefault(require("./store"));
 
 require("./filter/Data");
 
+var _vueLazyload = _interopRequireDefault(require("vue-lazyload"));
+
+var _fastclick = _interopRequireDefault(require("fastclick"));
+
+var _index = _interopRequireDefault(require("components/common/toast/index"));
+
 var _vant = _interopRequireDefault(require("vant"));
 
 require("vant/lib/index.css");
@@ -17,6 +23,14 @@ require("vant/lib/index.css");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 _vue["default"].config.productionTip = false;
+
+_fastclick["default"].attach(document.body);
+
+_vue["default"].use(_vueLazyload["default"], {
+  loading: require('assets/img/common/placeholder.png')
+});
+
+_vue["default"].use(_index["default"]);
 
 _vue["default"].use(_vant["default"]);
 

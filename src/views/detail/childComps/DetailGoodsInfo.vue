@@ -23,6 +23,7 @@ export default {
   },
   methods: {
       imgLoad() {
+        console.log('图片加载网络')
           this.$emit('imgLoad')
       }
   }

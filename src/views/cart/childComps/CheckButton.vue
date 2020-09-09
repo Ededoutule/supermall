@@ -11,21 +11,17 @@
 export default {
   name: "CheckButton",
   props: {
-    value: {
+    checked: {
       type: Boolean,
-      default: true,
+      // default: false,
     },
   },
   data() {
-    return {
-      checked: this.value,
-    };
+    return {};
   },
-
   components: {},
 
   computed: {},
-
   methods: {
     selectItem() {
       this.$emit("checkBtnClick");

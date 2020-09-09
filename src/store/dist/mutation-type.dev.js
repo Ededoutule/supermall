@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ADD_COUNT = exports.SHOW_CHOOSE = exports.ADD_SHOPING = void 0;
+exports.CHOOSE_CHECKED = exports.ADD_COUNT = exports.SHOW_CHOOSE = exports.ADD_SHOPING = void 0;
 var ADD_SHOPING = 'add_shoping'; //加入购物车
 
 exports.ADD_SHOPING = ADD_SHOPING;
@@ -13,3 +13,6 @@ exports.SHOW_CHOOSE = SHOW_CHOOSE;
 var ADD_COUNT = 'add_count'; //增加count
 
 exports.ADD_COUNT = ADD_COUNT;
+var CHOOSE_CHECKED = 'choose_checked'; //增加count
+
+exports.CHOOSE_CHECKED = CHOOSE_CHECKED;

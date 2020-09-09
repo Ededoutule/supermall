@@ -97,14 +97,12 @@ export default {
       }
     },
     addCart() {
-      if (this.skus) {
-        this.$store.dispatch("showchoose", false);
-        let style = this.skuInfo.props[0].list[this.choosestyleindex].name; //衣服颜色
-        let size = this.skuInfo.props[1].list[this.chooseColorindex].name; //衣服尺码
-        let price = this.skuInfo.skus[this.skus].nowprice; //衣服价格
-        let count = this.count
-        this.$emit("addToCart", {count, style, size,price});
-      }
+      this.$store.dispatch("showchoose", false);
+      let style = this.skuInfo.props[0].list[this.choosestyleindex].name; //衣服颜色
+      let size = this.skuInfo.props[1].list[this.chooseColorindex].name; //衣服尺码
+      let price = this.skuInfo.skus[this.skus].nowprice; //衣服价格
+      let count = this.count;
+      this.$emit("addToCart", { count, style, size, price });
     },
     closeCart() {
       this.$store.dispatch("showchoose", false);

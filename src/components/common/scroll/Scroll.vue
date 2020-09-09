@@ -39,12 +39,12 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      this._initScroll();
-    });
-    // setTimeout(() => {
+    // this.$nextTick(() => {
     //   this._initScroll();
-    // }, 1000); //设置1秒的延迟生成BScroll对象
+    // });
+    setTimeout(() => {
+      this._initScroll();
+    }, 1000); //设置1秒的延迟生成BScroll对象
   },
   watch: {
     datas() {

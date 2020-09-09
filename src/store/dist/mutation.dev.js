@@ -40,6 +40,10 @@ var _default = (_ADD_SHOPING$ADD_COUN = {}, _defineProperty(_ADD_SHOPING$ADD_COU
   oldshop.count += shop.count;
 }), _defineProperty(_ADD_SHOPING$ADD_COUN, _mutationType.SHOW_CHOOSE, function (state, isChooseshow) {
   state.isChooseshow = isChooseshow;
+}), _defineProperty(_ADD_SHOPING$ADD_COUN, _mutationType.CHOOSE_CHECKED, function (state, _ref3) {
+  var oldshop = _ref3.oldshop,
+      check = _ref3.check;
+  oldshop.checked = check;
 }), _ADD_SHOPING$ADD_COUN);
 
 exports["default"] = _default;

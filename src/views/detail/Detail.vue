@@ -94,7 +94,6 @@ export default {
       this.commentInfo = data.rate;
       //7.获取选择物品样式
       this.skuInfo = data.skuInfo;
-      console.log(this.shop);
       /*
       / 1.第一次获取，值不对。
       / 指不定的原因： this$refs.param.$el没有渲染
@@ -130,18 +129,22 @@ export default {
     });
     // 当图片加载完成时，更新better-scroll 的内容
     //使用节流函数
-    const refresh = debounce(this.$refs.scroll.refresh, 200);
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
     this.flag = debounce(() => {
       this.$nextTick(() => {
         this.themeTops[0] = 0;
-        this.themeTops[1] = this.$refs.param.$el.offsetTop - 44;
-        this.themeTops[2] = this.$refs.comment.$el.offsetTop - 44;
-        this.themeTops[3] = this.$refs.recommend.$el.offsetTop - 44;
+        this.themeTops[1] =
+          this.$refs.param && this.$refs.param.$el.offsetTop - 44;
+        this.themeTops[2] =
+          this.$refs.comment && this.$refs.comment.$el.offsetTop - 44;
+        this.themeTops[3] =
+          this.$refs.recommend && this.$refs.recommend.$el.offsetTop - 44;
         this.themeTops[4] = Number.MAX_VALUE;
-      }, 50);
-    });
+      });
+    }, 50);
     this.$bus.$on("detailitemImageLoad", () => {
       //图片加载完成后，执行这个函数
+      console.log("图片加载完成");
       refresh();
       this.flag();
     });
@@ -175,8 +178,8 @@ export default {
       this.$refs.scroll.scrollTo(0, -this.themeTops[index], 0);
     },
     imgLoad() {
-      this.$refs.scroll.refresh();
       this.flag();
+      this.$refs.scroll.refresh();
     },
     addShopping(count) {
       // 1.创建对象
@@ -192,10 +195,11 @@ export default {
       obj.size = count.size;
       obj.shopname = this.shop.name;
       // 3.添加到Store中
-      this.$store.dispatch("addshoping", obj);
-      Dialog.alert({
-        message: "购物车添加成功",
-      }).then(() => {
+      this.$store.dispatch("addshoping", obj).then((res) => {
+        this.$toast.show(res)
+        // Dialog.alert({
+        //   message: res,
+        // }).then(() => {});
       });
     },
   },
@@ -225,6 +229,7 @@ export default {
   }
   .content {
     height: calc(100% - 93px);
+    overflow: hidden;
     // position: relative;
     // right: 0;
     // left: 0;

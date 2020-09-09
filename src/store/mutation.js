@@ -1,7 +1,8 @@
 import {
     ADD_SHOPING,
     SHOW_CHOOSE,
-    ADD_COUNT
+    ADD_COUNT,
+    CHOOSE_CHECKED
 } from './mutation-type'
 
 export default {
@@ -35,4 +36,7 @@ export default {
     [SHOW_CHOOSE](state, isChooseshow) {
         state.isChooseshow = isChooseshow
     },
+    [CHOOSE_CHECKED](state, { oldshop, check }) {
+        oldshop.checked = check
+    }
 }

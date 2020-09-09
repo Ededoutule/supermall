@@ -6,7 +6,7 @@
       {{cartItem.shopname}}
     </div>
     <div class="item-conter">
-      <CheckButton class="item-check" @checkBtnClick="checkedChange" v-model="cartItem.checked"></CheckButton>
+      <check-button class="item-check" @checkBtnClick="checkedChange" :checked="cartItem.checked"></check-button>
       <div class="cart-img">
         <img :src="cartItem.imgURL" alt />
       </div>
@@ -28,7 +28,9 @@ export default {
   name: "CartListItem",
   props: ["cartItem"],
   data() {
-    return {};
+    return {
+      checked: false,
+    };
   },
 
   components: {
@@ -39,8 +41,11 @@ export default {
 
   methods: {
     checkedChange() {
-        console.log(111)
-      this.cartItem.checked = !this.cartItem.checked;
+      // console.log(this.cartItem)
+      this.checked = !this.checked;
+      let check = this.checked;
+      let cartitem = this.cartItem;
+      this.$store.dispatch("chooseChcek", { cartitem, check });
     },
   },
 };
